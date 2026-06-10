@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Вхід | TAZIRRA</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <form class="login-box" id="loginForm">
+
+        <h1>Вхід в акаунт</h1>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Логін"
+            required
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Пароль"
+            required
+        >
+
+        <button type="submit">
+            Увійти
+        </button>
+
+        <p id="error-message"></p>
+
+        <div class="register-link">
+            Нема акаунта?
+            <a href="register.html">
+                Реєстрація
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+document
+.getElementById('loginForm')
+.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    const username =
+    document.getElementById('username').value;
+
+    const password =
+    document.getElementById('password').value;
+
+    const response = await fetch('/login', {
+
+        method: 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify({
+            username,
+            password
+        })
+
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+
+        window.location.href =
+        '/dashboard.html';
+
+    } else {
+
+        document.getElementById('error-message')
+        .innerText = data.message;
+
+    }
+
+});
+
+</script>
+<script src="auth.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

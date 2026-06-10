@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+<meta charset="UTF-8">
+<title>Мої записи | TAZIRRA</title>
+
+<style>
+
+body{
+  margin:0;
+  font-family:Arial;
+  background:#000;
+  color:#fff;
+}
+
+.header{
+  padding:15px 30px;
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #222;
+}
+
+.logo span{ color:#ff9100; }
+
+nav a{
+  color:#fff;
+  margin:0 10px;
+  text-decoration:none;
+}
+
+nav a:hover{ color:#ff9100; }
+
+button{
+  background:#ff9100;
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+}
+
+/* CONTAINER */
+.container{
+  width:90%;
+  max-width:1100px;
+  margin:40px auto;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+/* STATS */
+.stats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+  gap:15px;
+  margin-bottom:25px;
+}
+
+.stat{
+  background:#111;
+  padding:15px;
+  border-radius:12px;
+  border:1px solid #222;
+}
+
+.stat h2{
+  color:#ff9100;
+  margin:0;
+}
+
+/* LIST */
+.card{
+  background:#111;
+  padding:15px;
+  margin:10px 0;
+  border-radius:12px;
+  border:1px solid #222;
+}
+
+.badge{
+  display:inline-block;
+  padding:5px 10px;
+  background:#ff9100;
+  color:#000;
+  border-radius:8px;
+  font-size:12px;
+}
+
+/* TIP */
+.tip{
+  margin-top:20px;
+  padding:15px;
+  background:#0b0b0b;
+  border-left:3px solid #ff9100;
+  color:#aaa;
+}
+
+</style>
+
+<script src="auth.js"></script>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+  <div class="logo">
+    TAZI<span>RRA</span>
+  </div>
+
+  <nav class="nav">
+    <a href="dashboard.html">Кабінет</a>
+    <a href="trainers.html">Тренери</a>
+    <a href="ai-trainer.html">AI тренер</a>
+  </nav>
+
+  <div class="user">
+
+    <span id="userName">👤</span>
+
+    <button onclick="logout()" class="logout-btn">
+  Вийти
+</button>
+
+  </div>
+
+</header>
+
+<!-- CONTENT -->
+<div class="container">
+
+<h1>📅 Мої записи</h1>
+
+<!-- STATS -->
+<div class="stats">
+
+  <div class="stat">
+    <h2 id="total">0</h2>
+    <p>Всього записів</p>
+  </div>
+
+  <div class="stat">
+    <h2 id="thisMonth">0</h2>
+    <p>Цього місяця</p>
+  </div>
+
+  <div class="stat">
+    <h2 id="active">✔</h2>
+    <p>Статус</p>
+  </div>
+
+</div>
+
+<!-- LIST -->
+<div id="list"></div>
+
+<!-- TIP -->
+<div class="tip">
+💡 Порада: регулярні тренування 3–4 рази на тиждень дають найкращий результат.  
+AI тренер може підібрати тобі програму під ціль.
+</div>
+
+</div>
+
+<script>
+
+const user = requireAuth();
+
+const key = "bookings_" + user.username;
+
+const data = JSON.parse(localStorage.getItem(key)) || [];
+
+/* STATS */
+document.getElementById("total").innerText = data.length;
+
+/* LIST */
+const list = document.getElementById("list");
+
+if(data.length === 0){
+  list.innerHTML = "<p style='color:#777'>Поки що немає записів</p>";
+}
+
+data.forEach(b => {
+
+  const div = document.createElement("div");
+
+  div.className = "card";
+
+  div.innerHTML = `
+    <span class="badge">Тренування</span>
+    <h3>🏋️ ${b.trainer}</h3>
+    <p>📅 ${b.date}</p>
+  `;
+
+  list.appendChild(div);
+
+});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мої записи | TAZIRRA</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    padding:30px;
+    border-right:1px solid #222;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{color:#ff9100;}
+
+.nav a{
+    display:block;
+    color:#ccc;
+    text-decoration:none;
+    padding:12px;
+    margin-bottom:10px;
+    background:#111;
+    border-radius:10px;
+}
+
+.nav a:hover{
+    background:#ff9100;
+    color:black;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+}
+
+h1{
+    font-size:40px;
+}
+
+/* CARDS */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.card{
+    background:#111;
+    border:1px solid #222;
+    padding:20px;
+    border-radius:15px;
+}
+
+.card h2{
+    color:#ff9100;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    background:#1a1a1a;
+    border-radius:8px;
+    font-size:12px;
+    margin-top:10px;
+}
+
+button{
+    margin-top:15px;
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    background:red;
+    color:white;
+    cursor:pointer;
+}
+
+.empty{
+    padding:40px;
+    background:#111;
+    border-radius:15px;
+    text-align:center;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">TAZ<span>IRRA</span></div>
+
+    <div class="nav">
+        <a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/settings">⚙️ Налаштування</a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <h1>📅 Мої записи</h1>
+    <p>Твої тренування та бронювання</p>
+
+    <div id="container" class="grid"></div>
+
+</div>
+
+
+<form id="form">
+  <input name="trainer_name" placeholder="Тренер">
+  <input name="specialty" placeholder="Тип">
+  <input name="date" type="date">
+  <input name="time" type="time">
+  <input name="image" type="file" accept="image/*">
+
+  <button>Створити</button>
+</form>
+
+
+<script>
+
+/* 🔥 ДЕМО ДАНІ (щоб не було пусто) */
+const demoBookings = [
+    {
+        id: 1,
+        trainerName: "Іван Петров",
+        specialty: "Силові тренування",
+        date: "2026-06-10",
+        time: "10:00"
+    },
+    {
+        id: 2,
+        trainerName: "Олена Коваль",
+        specialty: "Фітнес",
+        date: "2026-06-12",
+        time: "14:00"
+    }
+];
+
+const container = document.getElementById("container");
+
+/* рендер */
+function render(bookings){
+
+    container.innerHTML = "";
+
+    if(!bookings || bookings.length === 0){
+        container.innerHTML = `
+            <div class="empty">
+                <h2>Немає записів 😢</h2>
+                <p>Запишись на тренування у тренерах</p>
+            </div>
+        `;
+        return;
+    }
+
+    bookings.forEach(b => {
+        container.innerHTML += `
+            <div class="card">
+                <h2>${b.trainerName}</h2>
+
+                <p>${b.specialty}</p>
+
+                <div class="badge">📅 ${b.date}</div>
+                <div class="badge">🕒 ${b.time}</div>
+
+                <button onclick="cancel(${b.id})">
+                    Скасувати
+                </button>
+            </div>
+        `;
+    });
+}
+
+/* ❌ cancel */
+function cancel(id){
+    alert("Скасовано запис #" + id);
+}
+
+/* 🔥 ПІДКЛЮЧЕННЯ ДО БЕКЕНДУ */
+function render(bookings) {
+  container.innerHTML = "";
+
+  if (!bookings.length) {
+    container.innerHTML = `
+      <div class="empty">
+        <h2>Немає записів</h2>
+      </div>
+    `;
+    return;
+  }
+
+  bookings.forEach(b => {
+    container.innerHTML += `
+      <div class="card">
+        
+        ${b.image ? `<img src="${b.image}" style="width:100%;border-radius:10px;margin-bottom:10px;">` : ""}
+
+        <h2>${b.trainer_name}</h2>
+        <p>${b.specialty}</p>
+
+        <div class="badge">📅 ${b.date}</div>
+        <div class="badge">🕒 ${b.time}</div>
+
+        <button onclick="cancel(${b.id})">Скасувати</button>
+        <button onclick="like(${b.id})">❤ Лайк</button>
+      </div>
+    `;
+  });
+}
+
+async function cancel(id) {
+  await fetch("/bookings/" + id, { method: "DELETE" });
+  load();
+}
+
+async function load() {
+  const res = await fetch("/bookings");
+  const data = await res.json();
+  render(data);
+}
+
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  const formData = new FormData(e.target);
+
+  await fetch("/bookings", {
+    method: "POST",
+    body: formData
+  });
+
+  load();
+});
+
+
+</script>
+
+</body>
+</html>

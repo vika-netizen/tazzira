@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Портфоліо | TAZIRRA</title>
+
+<link rel="stylesheet" href="/css/portfolio.css">
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <div>
+
+        <div class="logo">
+            TAZ<span>IRRA</span>
+        </div>
+
+        <div class="nav">
+            <a href="/">🏠 Головна</a>
+            <a href="/dashboard">📊 Dashboard</a>
+            <a href="/trainers">🏋️ Тренери</a>
+            <a href="/records">📅 Мої записи</a>
+            <a href="/subscription">💳 Абонемент</a>
+            <a href="/profile">👤 Мій профіль</a>
+            <a href="/portfolio" class="active">📁 Моє портфоліо</a>
+            <a href="/posts">📝 Мої пости</a>
+            <a href="/meals">🍽 Харчування</a>
+            <a href="/ai">🤖 AI Тренер</a>
+            <a href="/settings">⚙️ Налаштування</a>
+        </div>
+
+    </div>
+
+    <form action="/logout" method="POST">
+        <button class="logout-btn">Вийти</button>
+    </form>
+
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <!-- HEADER -->
+    <div class="page-header">
+        <div>
+            <h1>Моє портфоліо</h1>
+            <p>Твої досягнення та роботи</p>
+        </div>
+
+        <button class="add-btn">+ Додати роботу</button>
+    </div>
+
+    <!-- AVATAR -->
+    <form action="/portfolio/avatar" method="POST" enctype="multipart/form-data" class="avatar-form">
+
+        <div class="avatar-section">
+
+            <div class="avatar" id="avatarPreview">
+
+                <% if (user.avatar) { %>
+                    <img src="<%= user.avatar %>" class="avatar-img">
+                <% } else { %>
+                    <span><%= user.username.charAt(0).toUpperCase() %></span>
+                <% } %>
+
+            </div>
+
+            <input type="file" id="avatarInput" name="avatar" accept="image/*">
+
+            <label for="avatarInput" class="upload-btn">
+                Обрати фото
+            </label>
+
+            <button type="submit" class="save-avatar">
+                Зберегти
+            </button>
+
+        </div>
+
+    </form>
+
+   <div class="portfolio-grid">
+
+    <% if (portfolio && portfolio.length > 0) { %>
+
+        <% portfolio.forEach(item => { %>
+
+            <div class="portfolio-card">
+
+                <div class="portfolio-image">
+                    <img src="<%= item.image %>" alt="work">
+                </div>
+
+                <div class="card-content">
+
+                    <h3><%= item.title %></h3>
+
+                    <p>
+                        <%= item.description ? item.description : "Без опису" %>
+                    </p>
+
+                </div>
+
+            </div>
+
+        <% }) %>
+
+    <% } else { %>
+
+        <div class="empty-portfolio">
+
+            <div class="empty-icon">📁</div>
+
+            <h3>Портфоліо порожнє</h3>
+
+            <p>Додай свої перші роботи, щоб вони тут з’явилися</p>
+
+            <button class="add-btn">
+                + Додати роботу
+            </button>
+
+        </div>
+
+    <% } %>
+
+</div>
+
+</div>
+
+<!-- JS PREVIEW AVATAR -->
+<script>
+const input = document.getElementById("avatarInput");
+const preview = document.getElementById("avatarPreview");
+
+input.addEventListener("change", function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function (e) {
+        preview.innerHTML = `<img src="${e.target.result}" class="avatar-img">`;
+    };
+
+    reader.readAsDataURL(file);
+});
+</script>
+
+</body>
+</html>

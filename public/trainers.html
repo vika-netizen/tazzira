@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Тренери | TAZIRRA</title>
+
+  <!-- SWIPER -->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
+  >
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      background:#000;
+      color:white;
+      font-family:Arial, sans-serif;
+    }
+
+    a{
+      text-decoration:none;
+      color:white;
+    }
+
+    /* HEADER */
+
+    .header{
+      width:100%;
+      border-bottom:1px solid #111;
+      padding:20px 0;
+      position:sticky;
+      top:0;
+      background:#000;
+      z-index:100;
+    }
+
+    .nav-container{
+      width:92%;
+      max-width:1400px;
+      margin:auto;
+
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      font-size:32px;
+      font-weight:800;
+    }
+
+    .logo span{
+      color:#ff9100;
+    }
+
+    .nav{
+      display:flex;
+      gap:40px;
+    }
+
+    .nav a{
+      color:#ccc;
+      transition:0.3s;
+    }
+
+    .nav a:hover{
+      color:#ff9100;
+    }
+
+    .login-btn{
+      background:white;
+      color:black;
+      padding:14px 24px;
+      border-radius:14px;
+      font-weight:700;
+    }
+
+    /* TITLE */
+
+    .page-title{
+      text-align:center;
+      padding:80px 20px 40px;
+    }
+
+    .page-title h1{
+      font-size:54px;
+      margin-bottom:14px;
+    }
+
+    .page-title p{
+      color:#999;
+      font-size:18px;
+    }
+
+    /* SECTION */
+
+    .trainers-section{
+      width:92%;
+      max-width:1450px;
+      margin:auto;
+      padding-bottom:100px;
+    }
+
+    /* TOP */
+
+    .section-top{
+      display:flex;
+      justify-content:flex-end;
+      margin-bottom:30px;
+    }
+
+    .slider-buttons{
+      display:flex;
+      gap:14px;
+    }
+
+    .slider-prev,
+    .slider-next{
+      width:60px;
+      height:60px;
+      border:none;
+      border-radius:50%;
+      background:#ff9100;
+      color:black;
+      font-size:28px;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.3s;
+    }
+
+    .slider-prev:hover,
+    .slider-next:hover{
+      transform:scale(1.08);
+    }
+
+    /* FILTER */
+
+    .trainer-filter{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-bottom:50px;
+    }
+
+    .filter-btn{
+      background:#111;
+      border:none;
+      color:white;
+      padding:14px 26px;
+      border-radius:30px;
+      cursor:pointer;
+      font-size:15px;
+      transition:0.3s;
+    }
+
+    .filter-btn.active{
+      background:#ff9100;
+      color:black;
+      font-weight:700;
+    }
+
+    /* SWIPER */
+
+    .trainersSwiper{
+      overflow:hidden;
+      padding:10px 5px 30px;
+    }
+
+    .swiper-wrapper{
+      align-items:stretch;
+    }
+
+    .swiper-slide{
+      height:auto;
+    }
+
+    /* CARD */
+
+    .trainer-card{
+      background:#0b0b0b;
+      border-radius:28px;
+      overflow:hidden;
+      border:1px solid #151515;
+      transition:0.35s;
+      height:100%;
+    }
+
+    .trainer-card:hover{
+      transform:translateY(-8px);
+      border-color:#ff9100;
+    }
+
+    .trainer-card img{
+      width:100%;
+      height:430px;
+      object-fit:cover;
+      display:block;
+    }
+
+    .trainer-info{
+      padding:28px;
+    }
+
+    .trainer-tag{
+      display:inline-block;
+      background:#ff9100;
+      color:black;
+      font-weight:700;
+      font-size:14px;
+      padding:10px 18px;
+      border-radius:20px;
+      margin-bottom:22px;
+    }
+
+    .trainer-info h3{
+      font-size:36px;
+      margin-bottom:16px;
+    }
+
+    .trainer-info p{
+      color:#9c9c9c;
+      font-size:18px;
+      line-height:1.6;
+    }
+
+    /* CTA */
+
+    .cta{
+      width:92%;
+      max-width:1200px;
+      margin:80px auto;
+      text-align:center;
+      background:#0b0b0b;
+      border-radius:40px;
+      padding:80px 40px;
+    }
+
+    .cta h2{
+      font-size:48px;
+      margin-bottom:20px;
+    }
+
+    .cta p{
+      color:#999;
+      font-size:20px;
+      margin-bottom:35px;
+    }
+
+    .btn-secondary{
+      background:#ff9100;
+      color:black;
+      padding:18px 34px;
+      border-radius:16px;
+      font-weight:700;
+      display:inline-block;
+    }
+
+    /* FOOTER */
+
+    .footer{
+      border-top:1px solid #111;
+      padding-top:70px;
+    }
+
+    .footer-container{
+      width:92%;
+      max-width:1400px;
+      margin:auto;
+
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:60px;
+    }
+
+    .footer-box h2,
+    .footer-box h3{
+      margin-bottom:24px;
+    }
+
+    .footer-box p{
+      color:#999;
+      line-height:1.7;
+    }
+
+    .footer-box a{
+      display:block;
+      margin-bottom:14px;
+      color:#ccc;
+    }
+
+    .footer-contact{
+      display:flex;
+      gap:12px;
+      margin-bottom:18px;
+      align-items:center;
+    }
+
+    .footer-bottom{
+      text-align:center;
+      padding:40px 0;
+      color:#777;
+      margin-top:50px;
+    }
+
+    /* MOBILE */
+
+    @media(max-width:1100px){
+
+      .nav{
+        display:none;
+      }
+
+      .page-title h1{
+        font-size:42px;
+      }
+
+      .trainer-card img{
+        height:360px;
+      }
+
+      .footer-container{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .trainer-info h3{
+        font-size:28px;
+      }
+
+      .trainer-card img{
+        height:320px;
+      }
+
+      .cta h2{
+        font-size:34px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<!-- HEADER -->
+
+<header class="header">
+
+  <div class="nav-container">
+
+    <div class="logo">
+      TAZI<span>RRA</span>
+    </div>
+
+    <nav class="nav">
+      <a href="index.html">Головна</a>
+      <a href="programs.html">Програми</a>
+      <a href="trainers.html">Тренери</a>
+      <a href="price.html">Прайс</a>
+      <a href="reviews.html">Відгуки</a>
+      <a href="contacts.html">Контакти</a>
+    </nav>
+
+    <a href="login.html" class="login-btn">
+      Увійти
+    </a>
+
+  </div>
+
+</header>
+
+<!-- TITLE -->
+
+<section class="page-title">
+
+  <h1>Наші тренери</h1>
+
+  <p>
+    Команда, яка веде до результату
+  </p>
+
+</section>
+
+<!-- TRAINERS -->
+
+<section class="trainers-section">
+
+  <!-- TOP -->
+
+  <div class="section-top">
+
+    <div class="slider-buttons">
+
+      <button class="slider-prev">
+        ←
+      </button>
+
+      <button class="slider-next">
+        →
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- SWIPER -->
+
+  <div class="swiper trainersSwiper">
+
+    <div class="swiper-wrapper">
+
+      <!-- CARD -->
+
+      <div class="swiper-slide">
+
+  <div class="trainer-card">
+
+    <a href="oleksandr.html">
+
+      <img src="https://i.pinimg.com/736x/64/c9/d0/64c9d0dac553b3831ee9c28561309aa2.jpg">
+
+      <div class="trainer-info">
+
+        <span class="trainer-tag">
+          Силові
+        </span>
+
+        <h3>Олександр</h3>
+
+        <p>
+          Набір маси, сила, базові вправи.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+      <!-- CARD -->
+
+      <!-- MARIA -->
+
+<div class="swiper-slide">
+
+  <div class="trainer-card">
+
+    <a href="maria.html">
+
+      <img src="https://i.pinimg.com/736x/a8/aa/db/a8aadb48909a859de6d8eebd7303dc0a.jpg">
+
+      <div class="trainer-info">
+
+        <span class="trainer-tag">
+          Фітнес
+        </span>
+
+        <h3>Марія</h3>
+
+        <p>
+          Кардіо, тонус тіла, функціонал.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+<!-- IGOR -->
+
+<div class="swiper-slide">
+
+  <div class="trainer-card">
+
+    <a href="igor.html">
+
+      <img src="https://i.pinimg.com/736x/ce/57/54/ce5754568223143c8cce9b37e14fc3f1.jpg">
+
+      <div class="trainer-info">
+
+        <span class="trainer-tag">
+          Бокс
+        </span>
+
+        <h3>Ігор</h3>
+
+        <p>
+          Постановка удару, техніка, витривалість.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+<!-- ANASTASIA -->
+
+<div class="swiper-slide">
+
+  <div class="trainer-card">
+
+    <a href="anastasia.html">
+
+      <img src="https://i.pinimg.com/736x/f7/e3/ef/f7e3efcf60659961628d1391d6a72f0e.jpg">
+
+      <div class="trainer-info">
+
+        <span class="trainer-tag">
+          Персональні
+        </span>
+
+        <h3>Анастасія</h3>
+
+        <p>
+          Індивідуальні програми під цілі.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+<!-- DMYTRO -->
+
+<div class="swiper-slide">
+
+  <div class="trainer-card">
+
+    <a href="dmytro.html">
+
+      <img src="https://i.pinimg.com/736x/6c/1a/ca/6c1aca5643c5b4d3162d8c9b87b98fa9.jpg">
+
+      <div class="trainer-info">
+
+        <span class="trainer-tag">
+          Силові
+        </span>
+
+        <h3>Дмитро</h3>
+
+        <p>
+          Сила + функціональні тренування.
+        </p>
+
+      </div>
+
+    </a>
+
+  </div>
+
+</div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="cta">
+
+  <h2>
+    Не знаєш кого обрати?
+  </h2>
+
+  <p>
+    Напиши нам — підберемо тренера під твою ціль
+  </p>
+
+  <a href="contacts.html" class="btn-secondary">
+    Зв’язатися
+  </a>
+
+</section>
+<!-- SWIPER -->
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<script>
+
+  const swiper = new Swiper(".trainersSwiper", {
+
+    slidesPerView: 4,
+    spaceBetween: 28,
+
+    navigation:{
+      nextEl:".slider-next",
+      prevEl:".slider-prev",
+    },
+
+    breakpoints:{
+
+      0:{
+        slidesPerView:1.1
+      },
+
+      700:{
+        slidesPerView:2
+      },
+
+      1000:{
+        slidesPerView:3
+      },
+
+      1350:{
+        slidesPerView:4
+      }
+
+    }
+
+  });
+
+</script>
+
+</body>
+</html>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- LOGO -->
+    <div class="footer-box">
+      <h2>TAZIRRA</h2>
+
+      <p>
+        Фітнес-клуб із фокусом
+        на результат.
+      </p>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="footer-box">
+      <h3>Навігація</h3>
+
+      <a href="index.html">Головна</a>
+      <a href="programs.html">Програми</a>
+      <a href="trainers.html">Тренери</a>
+      <a href="price.html">Прайс</a>
+      <a href="reviews.html">Відгуки</a>
+      <a href="contacts.html">Контакти</a>
+    </div>
+
+    <!-- CONTACTS -->
+    <div class="footer-box">
+      <h3>Контакти</h3>
+
+      <div class="footer-contact">
+        <span>📍</span>
+        <p>Івано-Франківськ</p>
+      </div>
+
+      <div class="footer-contact">
+        <span>📞</span>
+        <p>+380 96 678 34 75</p>
+      </div>
+
+      <div class="footer-contact">
+        <span>📸</span>
+
+        <a href="https://www.instagram.com/tazirra_gym?igsh=MWg5N2lhM24weXMwbQ=="
+           target="_blank">
+
+          @tazirra_gym
+
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 TAZIRRA
+  </div>
+
+</footer>
+
+</body>
+</html>

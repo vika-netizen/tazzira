@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Харчування</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#050505;
+  color:white;
+  display:flex;
+}
+
+/* SIDEBAR (той самий стиль) */
+.sidebar{
+  width:260px;
+  background:#0d0d0d;
+  border-right:1px solid #1f1f1f;
+  padding:30px 20px;
+}
+
+.nav a{
+  display:block;
+  padding:12px;
+  margin-bottom:10px;
+  background:#111;
+  color:#ccc;
+  text-decoration:none;
+  border-radius:10px;
+}
+
+.nav a:hover{
+  background:#ff9100;
+  color:black;
+}
+
+/* MAIN */
+.main{
+  flex:1;
+  padding:40px;
+}
+
+.box{
+  background:#111;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:12px;
+  border:1px solid #222;
+}
+
+input{
+  padding:10px;
+  margin:5px;
+  width:200px;
+  background:#000;
+  color:white;
+  border:1px solid #333;
+}
+
+button{
+  padding:10px 15px;
+  background:#ff9100;
+  border:none;
+  cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+  <div class="nav">
+    <a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/settings">⚙️ Налаштування</a>
+  </div>
+
+
+<div class="main">
+
+<h1>Харчування</h1>
+
+<p>Користувач: <%= user.username %></p>
+
+<div class="box">
+  <form method="POST" action="/add-meal">
+    <input type="text" name="food" placeholder="Що поїв?" required>
+    <input type="number" name="calories" placeholder="Калорії" required>
+    <button>Додати</button>
+  </form>
+</div>
+
+<h2>Записи</h2>
+
+<% meals.forEach(m => { %>
+  <div class="box">
+    <b><%= m.food %></b><br>
+    <span><%= m.calories %> kcal</span><br>
+    <small><%= m.created_at %></small>
+  </div>
+<% }) %>
+
+</div>
+
+</body>
+</html>

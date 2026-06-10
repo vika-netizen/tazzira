@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Пости | TAZIRRA</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#050505;
+color:white;
+}
+
+/* HEADER */
+.header{
+padding:25px;
+text-align:center;
+background:#0d0d0d;
+border-bottom:1px solid #222;
+}
+
+.header h1{
+color:#ff9100;
+}
+
+/* CONTAINER */
+.container{
+max-width:900px;
+margin:auto;
+padding:20px;
+}
+
+/* CREATE POST */
+.create-post{
+background:#111;
+border:1px solid #222;
+padding:15px;
+border-radius:12px;
+margin-bottom:20px;
+}
+
+.create-post textarea{
+width:100%;
+height:80px;
+resize:none;
+background:#1a1a1a;
+border:1px solid #333;
+color:white;
+padding:10px;
+border-radius:10px;
+outline:none;
+}
+
+.create-post button{
+margin-top:10px;
+width:100%;
+padding:10px;
+background:#ff9100;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.create-post button:hover{
+opacity:0.9;
+}
+
+/* POST */
+.post{
+background:#111;
+border:1px solid #222;
+border-radius:12px;
+padding:15px;
+margin-bottom:15px;
+}
+
+.post-header{
+display:flex;
+justify-content:space-between;
+color:#aaa;
+font-size:13px;
+margin-bottom:10px;
+}
+
+.post-text{
+margin-bottom:10px;
+line-height:1.5;
+color:#ddd;
+}
+
+.actions{
+display:flex;
+gap:10px;
+}
+
+.actions button{
+flex:1;
+padding:8px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:bold;
+background:#1a1a1a;
+color:white;
+}
+
+.actions button.like{
+background:#ff9100;
+color:black;
+}
+
+.comment-box{
+margin-top:10px;
+display:none;
+}
+
+.comment-box input{
+width:100%;
+padding:8px;
+border-radius:8px;
+border:1px solid #333;
+background:#1a1a1a;
+color:white;
+}
+
+.comment-list{
+margin-top:10px;
+font-size:13px;
+color:#bbb;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+<h1>TAZIRRA POSTS</h1>
+</div>
+
+<div class="container">
+
+<!-- CREATE POST -->
+<div class="create-post">
+<textarea id="postText" placeholder="Що нового у тебе в тренуваннях? 💪"></textarea>
+<button onclick="addPost()">Опублікувати</button>
+</div>
+
+<!-- POSTS -->
+<div id="posts"></div>
+
+</div>
+
+<script>
+
+let posts = JSON.parse(localStorage.getItem("posts")) || [];
+
+/* SAVE */
+function savePosts(){
+localStorage.setItem("posts", JSON.stringify(posts));
+}
+
+/* RENDER */
+function renderPosts(){
+
+const container = document.getElementById("posts");
+container.innerHTML = "";
+
+posts.forEach((p, index)=>{
+
+container.innerHTML += `
+<div class="post">
+
+<div class="post-header">
+<span>Користувач</span>
+<span>${p.date}</span>
+</div>
+
+<div class="post-text">${p.text}</div>
+
+<div class="actions">
+
+<button class="like" onclick="likePost(${index})">
+❤️ ${p.likes}
+</button>
+
+<button onclick="toggleComment(${index})">
+💬 Коментарі
+</button>
+
+</div>
+
+<div class="comment-box" id="commentBox${index}">
+<input type="text"
+placeholder="Написати коментар..."
+onkeypress="addComment(event,${index},this)">
+</div>
+
+<div class="comment-list">
+${p.comments.map(c => `<div>• ${c}</div>`).join("")}
+</div>
+
+</div>
+`;
+});
+
+savePosts();
+}
+
+/* ADD POST */
+function addPost(){
+
+let text = document.getElementById("postText").value;
+
+if(!text.trim()){
+alert("Напиши щось!");
+return;
+}
+
+posts.unshift({
+text,
+date: new Date().toLocaleString(),
+likes: 0,
+comments: []
+});
+
+document.getElementById("postText").value = "";
+
+savePosts();
+renderPosts();
+}
+
+/* LIKE */
+function likePost(i){
+posts[i].likes += 1;
+savePosts();
+renderPosts();
+}
+
+/* TOGGLE COMMENTS */
+function toggleComment(i){
+
+let box = document.getElementById("commentBox" + i);
+
+if(box.style.display === "block"){
+box.style.display = "none";
+}else{
+box.style.display = "block";
+}
+
+}
+
+/* ADD COMMENT */
+function addComment(e, i, input){
+
+if(e.key === "Enter" && input.value.trim()){
+
+posts[i].comments.push(input.value);
+
+input.value = "";
+
+savePosts();
+renderPosts();
+
+}
+
+}
+
+/* INIT */
+renderPosts();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Налаштування | TAZIRRA</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#050505;
+color:white;
+display:flex;
+min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:260px;
+background:#0d0d0d;
+padding:30px;
+border-right:1px solid #222;
+}
+
+.logo{
+font-size:32px;
+font-weight:bold;
+margin-bottom:40px;
+}
+
+.logo span{color:#ff9100;}
+
+.nav a{
+display:block;
+padding:12px;
+margin-bottom:10px;
+text-decoration:none;
+background:#111;
+color:#ccc;
+border-radius:10px;
+}
+
+.nav a:hover{
+background:#ff9100;
+color:black;
+}
+
+/* MAIN */
+.main{
+flex:1;
+padding:40px;
+}
+
+h1{
+margin-bottom:25px;
+}
+
+/* CARD */
+.card{
+background:#111;
+border:1px solid #222;
+border-radius:15px;
+padding:20px;
+margin-bottom:20px;
+}
+
+.card h2{
+color:#ff9100;
+margin-bottom:15px;
+}
+
+/* INPUTS */
+input, select{
+width:100%;
+padding:10px;
+margin-top:8px;
+margin-bottom:15px;
+background:#1a1a1a;
+border:1px solid #333;
+color:white;
+border-radius:8px;
+outline:none;
+}
+
+/* BUTTONS */
+button{
+padding:10px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.save{
+background:#ff9100;
+color:black;
+width:100%;
+}
+
+.logout{
+background:#d62828;
+color:white;
+width:100%;
+margin-top:10px;
+}
+
+/* SWITCH */
+.switch{
+display:flex;
+align-items:center;
+justify-content:space-between;
+margin-bottom:10px;
+}
+
+.switch input{
+width:auto;
+}
+
+.small{
+font-size:13px;
+color:#aaa;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<div class="logo">TAZ<span>IRRA</span></div>
+
+<div class="nav">
+    <a href="/dashboard.html">📊 Dashboard</a>
+    <a href="/trainerss.html">🏋️ Тренери</a>
+    <a href="/records.html">📅 Мої записи</a>
+    <a href="/subscription.html">💳 Абонемент</a>
+    <a href="/profile.html">👤 Мій профіль</a>
+    <a href="/portfolio.html">📁 Моє портфоліо</a>
+    <a href="/posts.html">📝 Мої пости</a>
+    <a href="/meals.html">🍽 Харчування</a>
+    <a href="/settings.html">⚙️ Налаштування</a>
+</div>
+
+</div>
+
+<div class="main">
+
+<h1>⚙️ Налаштування</h1>
+
+<!-- PROFILE -->
+<div class="card">
+
+<h2>Профіль</h2>
+
+<label>Ім’я</label>
+<input type="text" id="name">
+
+<label>Email</label>
+<input type="email" id="email">
+
+<label>Телефон</label>
+<input type="text" id="phone">
+
+<button class="save" onclick="saveProfile()">Зберегти</button>
+
+</div>
+
+<!-- APPEARANCE -->
+<div class="card">
+
+<h2>Вигляд</h2>
+
+<div class="switch">
+<span>Темна тема</span>
+<input type="checkbox" id="theme" checked>
+</div>
+
+<div class="switch">
+<span>Сповіщення</span>
+<input type="checkbox" id="notify" checked>
+</div>
+
+<div class="small">
+Зміни застосовуються локально (localStorage)
+</div>
+
+</div>
+
+<!-- SECURITY -->
+<div class="card">
+
+<h2>Безпека</h2>
+
+<label>Новий пароль</label>
+<input type="password" id="pass">
+
+<button class="save" onclick="changePassword()">
+Змінити пароль
+</button>
+
+</div>
+
+<!-- LOGOUT -->
+<div class="card">
+
+<h2>Вихід</h2>
+
+<button class="logout" onclick="logout()">
+Вийти з акаунта
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+// LOAD
+window.onload = ()=>{
+document.getElementById("name").value =
+localStorage.getItem("name") || "";
+
+document.getElementById("email").value =
+localStorage.getItem("email") || "";
+
+document.getElementById("phone").value =
+localStorage.getItem("phone") || "";
+}
+
+// SAVE PROFILE
+function saveProfile(){
+
+localStorage.setItem("name",
+document.getElementById("name").value);
+
+localStorage.setItem("email",
+document.getElementById("email").value);
+
+localStorage.setItem("phone",
+document.getElementById("phone").value);
+
+alert("Профіль збережено!");
+}
+
+// PASSWORD
+function changePassword(){
+
+let pass = document.getElementById("pass").value;
+
+if(!pass){
+alert("Введіть пароль");
+return;
+}
+
+localStorage.setItem("password", pass);
+
+document.getElementById("pass").value="";
+
+alert("Пароль змінено!");
+}
+
+// THEME
+document.getElementById("theme").onchange = (e)=>{
+localStorage.setItem("theme", e.target.checked);
+}
+
+// NOTIFY
+document.getElementById("notify").onchange = (e)=>{
+localStorage.setItem("notify", e.target.checked);
+}
+
+// LOGOUT
+function logout(){
+
+localStorage.clear();
+
+alert("Ви вийшли з акаунта");
+
+window.location.href = "/";
+}
+
+</script>
+
+</body>
+</html>

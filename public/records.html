@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мої записи | TAZIRRA</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    padding:30px;
+    border-right:1px solid #222;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{color:#ff9100;}
+
+.nav a{
+    display:block;
+    color:#ccc;
+    text-decoration:none;
+    padding:12px;
+    margin-bottom:10px;
+    background:#111;
+    border-radius:10px;
+}
+
+.nav a:hover{
+    background:#ff9100;
+    color:black;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+}
+
+h1{
+    font-size:38px;
+}
+
+/* FORMS */
+form{
+    margin-top:20px;
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    border:1px solid #222;
+    display:grid;
+    gap:10px;
+}
+
+input{
+    padding:10px;
+    background:#000;
+    border:1px solid #333;
+    color:white;
+    border-radius:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:20px;
+    margin-top:30px;
+}
+
+.card{
+    background:#111;
+    border:1px solid #222;
+    padding:20px;
+    border-radius:15px;
+}
+
+.card h2{
+    color:#ff9100;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    background:#1a1a1a;
+    border-radius:8px;
+    font-size:12px;
+    margin:5px 5px 0 0;
+}
+
+/* BUTTONS */
+button{
+    width:100%;
+    padding:10px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    color:white;
+}
+
+.delete{background:red;}
+.like{background:#ff9100;}
+.status-btn{background:#333;}
+
+/* EMPTY */
+.empty{
+    padding:40px;
+    background:#111;
+    border-radius:15px;
+    text-align:center;
+    margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="logo">TAZ<span>IRRA</span></div>
+
+    <div class="nav">
+    <a href="/dashboard.html">📊 Dashboard</a>
+    <a href="/trainerss.html">🏋️ Тренери</a>
+    <a href="/records.html">📅 Мої записи</a>
+    <a href="/subscription.html">💳 Абонемент</a>
+    <a href="/profile.html">👤 Мій профіль</a>
+    <a href="/portfolio.html">📁 Моє портфоліо</a>
+    <a href="/posts.html">📝 Мої пости</a>
+    <a href="/meals.html">🍽 Харчування</a>
+    <a href="/settings.html">⚙️ Налаштування</a>
+    </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+    <h1>📅 Мої записи</h1>
+
+    <!-- RECORD FORM -->
+    <form id="form">
+
+        <input id="trainer_name" placeholder="Тренер" required>
+        <input id="specialty" placeholder="Тип тренування" required>
+        <input id="comment" placeholder="Коментар (необов'язково)">
+        <input id="date" type="date" required>
+        <input id="time" type="time" required>
+
+        <button type="submit">Створити запис</button>
+
+    </form>
+
+    <div id="container" class="grid"></div>
+
+    <hr style="margin:50px 0;border:1px solid #222;">
+
+    <h1>🧠 Планер</h1>
+
+    <!-- PLANNER FORM -->
+    <form id="plannerForm">
+
+        <input id="taskText" placeholder="Нова задача..." required>
+        <input id="taskDate" type="date">
+
+        <button type="submit">Додати задачу</button>
+
+    </form>
+
+    <div id="plannerContainer" class="grid"></div>
+
+</div>
+
+<script>
+
+/* =========================
+   RECORDS
+========================= */
+
+const form = document.getElementById("form");
+const container = document.getElementById("container");
+
+let bookings = JSON.parse(localStorage.getItem("my_bookings")) || [];
+
+function saveBookings(){
+    localStorage.setItem("my_bookings", JSON.stringify(bookings));
+}
+
+function renderBookings(){
+
+    container.innerHTML = "";
+
+    if(bookings.length === 0){
+        container.innerHTML = `
+            <div class="empty">
+                <h2>Немає записів</h2>
+            </div>
+        `;
+        return;
+    }
+
+    bookings.forEach((b, i) => {
+
+        container.innerHTML += `
+            <div class="card">
+
+                <h2>${b.trainer_name}</h2>
+                <p>${b.specialty}</p>
+
+                ${b.comment ? `<p style="opacity:.7">💬 ${b.comment}</p>` : ""}
+
+                <div class="badge">📅 ${b.date}</div>
+                <div class="badge">🕒 ${b.time}</div>
+
+                <div class="badge">${b.status || "active"}</div>
+
+                <button class="status-btn" onclick="toggleStatus(${i})">
+                    Статус
+                </button>
+
+                <button class="like" onclick="like(${i})">
+                    ❤️ Лайк (${b.likes || 0})
+                </button>
+
+                <button class="delete" onclick="removeBooking(${i})">
+                    Скасувати
+                </button>
+
+            </div>
+        `;
+    });
+}
+
+form.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    bookings.push({
+        trainer_name: document.getElementById("trainer_name").value,
+        specialty: document.getElementById("specialty").value,
+        comment: document.getElementById("comment").value,
+        date: document.getElementById("date").value,
+        time: document.getElementById("time").value,
+        status: "active",
+        likes: 0
+    });
+
+    saveBookings();
+    renderBookings();
+
+    form.reset();
+});
+
+function removeBooking(i){
+    bookings.splice(i, 1);
+    saveBookings();
+    renderBookings();
+}
+
+function like(i){
+    bookings[i].likes = (bookings[i].likes || 0) + 1;
+    saveBookings();
+    renderBookings();
+}
+
+function toggleStatus(i){
+    bookings[i].status =
+        bookings[i].status === "active"
+        ? "done"
+        : "active";
+
+    saveBookings();
+    renderBookings();
+}
+
+/* =========================
+   PLANNER
+========================= */
+
+const plannerForm = document.getElementById("plannerForm");
+const plannerContainer = document.getElementById("plannerContainer");
+
+let tasks = JSON.parse(localStorage.getItem("planner_tasks")) || [];
+
+function saveTasks(){
+    localStorage.setItem("planner_tasks", JSON.stringify(tasks));
+}
+
+function renderTasks(){
+
+    plannerContainer.innerHTML = "";
+
+    if(tasks.length === 0){
+        plannerContainer.innerHTML = `
+            <div class="empty">
+                <h2>Планер порожній</h2>
+            </div>
+        `;
+        return;
+    }
+
+    tasks.forEach((t, i) => {
+
+        plannerContainer.innerHTML += `
+            <div class="card">
+
+                <h2>${t.text}</h2>
+
+                ${t.date ? `<div class="badge">📅 ${t.date}</div>` : ""}
+
+                <div class="badge">${t.done ? "✔ done" : "⏳ active"}</div>
+
+                <button class="status-btn" onclick="toggleTask(${i})">
+                    Статус
+                </button>
+
+                <button class="delete" onclick="deleteTask(${i})">
+                    Видалити
+                </button>
+
+            </div>
+        `;
+    });
+}
+
+plannerForm.addEventListener("submit", (e) => {
+
+    e.preventDefault();
+
+    tasks.push({
+        text: document.getElementById("taskText").value,
+        date: document.getElementById("taskDate").value,
+        done: false
+    });
+
+    saveTasks();
+    renderTasks();
+
+    plannerForm.reset();
+});
+
+function toggleTask(i){
+    tasks[i].done = !tasks[i].done;
+    saveTasks();
+    renderTasks();
+}
+
+function deleteTask(i){
+    tasks.splice(i, 1);
+    saveTasks();
+    renderTasks();
+}
+
+/* INIT */
+
+renderBookings();
+renderTasks();
+
+</script>
+
+</body>
+</html>

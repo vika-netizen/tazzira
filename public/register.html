@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Реєстрація | TAZIRRA</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<div class="login-page">
+
+    <form class="login-box" id="registerForm">
+
+        <h1>Створення акаунта</h1>
+
+        <input
+            type="text"
+            id="username"
+            placeholder="Логін"
+            required
+        >
+
+        <input
+            type="password"
+            id="password"
+            placeholder="Пароль"
+            required
+        >
+
+        <button type="submit">
+            Зареєструватись
+        </button>
+
+        <p id="error-message"></p>
+
+        <div class="register-link">
+            Вже є акаунт?
+            <a href="login.html">
+                Увійти
+            </a>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+
+document
+.getElementById('registerForm')
+.addEventListener('submit', async (e) => {
+
+    e.preventDefault();
+
+    const username =
+    document.getElementById('username').value;
+
+    const password =
+    document.getElementById('password').value;
+
+    const response = await fetch('/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            username,
+            password
+        })
+    });
+
+    const data = await response.json();
+
+if (data.success) {
+
+    window.location.href = "/login.html";
+
+} else {
+
+    document.getElementById("error-message")
+    .innerText = "Помилка реєстрації";
+
+}
+});
+
+</script>
+<script src="auth.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
+

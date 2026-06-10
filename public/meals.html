@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Харчування | TAZIRRA</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    padding:30px;
+    border-right:1px solid #222;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+.logo span{color:#ff9100;}
+
+.nav a{
+    display:block;
+    padding:12px;
+    margin-bottom:10px;
+    background:#111;
+    color:#ccc;
+    text-decoration:none;
+    border-radius:10px;
+}
+.nav a:hover{background:#ff9100;color:black;}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+}
+
+h1{font-size:36px;}
+
+/* TOP STATS */
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:15px;
+    margin-top:20px;
+}
+
+.stat{
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    border:1px solid #222;
+}
+
+.stat h2{
+    color:#ff9100;
+    margin:0;
+}
+
+/* FILTERS */
+.filters{
+    margin-top:20px;
+    display:flex;
+    gap:10px;
+}
+
+.filters button{
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#111;
+    color:white;
+}
+
+/* FORM */
+form{
+    margin-top:25px;
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+    border:1px solid #222;
+    display:grid;
+    gap:10px;
+}
+
+input,select{
+    padding:10px;
+    background:#000;
+    border:1px solid #333;
+    color:white;
+    border-radius:8px;
+}
+
+/* GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:15px;
+    margin-top:25px;
+}
+
+.card{
+    background:#111;
+    border:1px solid #222;
+    padding:15px;
+    border-radius:15px;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 10px;
+    background:#1a1a1a;
+    border-radius:8px;
+    margin:5px 5px 0 0;
+    font-size:12px;
+}
+
+button{
+    width:100%;
+    margin-top:10px;
+    padding:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.delete{background:#ff2b2b;color:white;}
+
+/* GOAL BAR */
+.goal{
+    margin-top:20px;
+    background:#111;
+    padding:15px;
+    border-radius:15px;
+    border:1px solid #222;
+}
+
+.bar{
+    height:12px;
+    background:#222;
+    border-radius:10px;
+    overflow:hidden;
+}
+
+.bar div{
+    height:100%;
+    background:#ff9100;
+    width:0%;
+}
+.warning{color:#ff3b3b;}
+
+/* CHART */
+.chart{
+    margin-top:20px;
+    background:#111;
+    padding:20px;
+    border-radius:15px;
+}
+.bar-row{
+    display:flex;
+    align-items:end;
+    gap:10px;
+    height:120px;
+}
+.bar-col{
+    flex:1;
+    background:#222;
+    position:relative;
+}
+.bar-fill{
+    position:absolute;
+    bottom:0;
+    width:100%;
+    background:#ff9100;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">TAZ<span>IRRA</span></div>
+
+    <div class="nav">
+           <a href="/">🏠 Головна</a>
+    <a href="/dashboard.html">📊 Dashboard</a>
+    <a href="/trainerss.html">🏋️ Тренери</a>
+    <a href="/records.html">📅 Мої записи</a>
+    <a href="/subscription.html">💳 Абонемент</a>
+    <a href="/profile.html">👤 Мій профіль</a>
+    <a href="/portfolio.html">📁 Моє портфоліо</a>
+    <a href="/posts.html">📝 Мої пости</a>
+    <a href="/meals.html">🍽 Харчування</a>
+    <a href="/settings.html">⚙️ Налаштування</a>
+    </div>
+    </div>
+</div>
+
+<div class="main">
+
+<h1>🍽 Харчування</h1>
+
+<div class="goal">
+    <h3>🎯 Ціль: <span id="goalText">2000</span> ккал</h3>
+    <div class="bar"><div id="goalBar"></div></div>
+    <p id="warning"></p>
+</div>
+
+<div class="stats">
+    <div class="stat"><h2 id="cal">0</h2><p>Ккал</p></div>
+    <div class="stat"><h2 id="p">0</h2><p>Білки</p></div>
+    <div class="stat"><h2 id="f">0</h2><p>Жири</p></div>
+    <div class="stat"><h2 id="c">0</h2><p>Вуглеводи</p></div>
+</div>
+
+<div class="filters">
+    <button onclick="setFilter('today')">Сьогодні</button>
+    <button onclick="setFilter('week')">Тиждень</button>
+    <button onclick="setFilter('all')">Всі</button>
+</div>
+
+<form id="form">
+    <select id="category">
+        <option value="food">Їжа</option>
+        <option value="drink">Напої</option>
+        <option value="sweet">Солодке</option>
+    </select>
+
+    <input id="name" placeholder="Назва">
+    <input id="grams" type="number" placeholder="Грами">
+    <input id="calories" type="number" placeholder="Ккал">
+    <input id="proteins" type="number" placeholder="Білки">
+    <input id="fats" type="number" placeholder="Жири">
+    <input id="carbs" type="number" placeholder="Вуглеводи">
+
+    <button>Додати</button>
+</form>
+
+<div class="grid" id="list"></div>
+
+<div class="chart">
+    <h3>📊 Графік (останні 7 днів)</h3>
+    <div class="bar-row" id="chart"></div>
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+let meals = JSON.parse(localStorage.getItem("meals")) || [];
+let filter = "today";
+let goal = 2000;
+
+function save(){
+    localStorage.setItem("meals", JSON.stringify(meals));
+}
+
+function isInFilter(date){
+
+    const d = new Date(date);
+    const now = new Date();
+
+    if(filter === "today"){
+        return d.toDateString() === now.toDateString();
+    }
+
+    if(filter === "week"){
+        const weekAgo = new Date();
+        weekAgo.setDate(now.getDate()-7);
+        return d >= weekAgo;
+    }
+
+    return true;
+}
+
+function render(){
+
+    const list = document.getElementById("list");
+
+    let total = {cal:0,p:0,f:0,c:0};
+
+    list.innerHTML = "";
+
+    meals.filter(m => isInFilter(m.date)).forEach((m,i)=>{
+
+        total.cal += +m.calories;
+        total.p += +m.proteins;
+        total.f += +m.fats;
+        total.c += +m.carbs;
+
+        list.innerHTML += `
+        <div class="card">
+
+            <h3>${m.name}</h3>
+
+            <span class="badge">${m.category}</span>
+            <span class="badge">${m.grams} г</span>
+
+            <div class="badge">🔥 ${m.calories}</div>
+            <div class="badge">💪 ${m.proteins}</div>
+
+            <button class="delete" onclick="del(${i})">Видалити</button>
+        </div>`;
+    });
+
+    document.getElementById("cal").innerText = total.cal;
+    document.getElementById("p").innerText = total.p;
+    document.getElementById("f").innerText = total.f;
+    document.getElementById("c").innerText = total.c;
+
+    let percent = (total.cal/goal)*100;
+    document.getElementById("goalBar").style.width = percent+"%";
+
+    document.getElementById("warning").innerText =
+        percent > 100 ? "⚠ перевищено норму" : "";
+
+    renderChart();
+}
+
+function del(i){
+    meals.splice(i,1);
+    save();
+    render();
+}
+
+document.getElementById("form").addEventListener("submit",(e)=>{
+    e.preventDefault();
+
+    meals.push({
+        category:category.value,
+        name:name.value,
+        grams:grams.value,
+        calories:calories.value,
+        proteins:proteins.value,
+        fats:fats.value,
+        carbs:carbs.value,
+        date:new Date().toISOString()
+    });
+
+    save();
+    e.target.reset();
+    render();
+});
+
+function setFilter(f){
+    filter = f;
+    render();
+}
+
+/* CHART */
+function renderChart(){
+
+    const chart = document.getElementById("chart");
+    chart.innerHTML = "";
+
+    let days = {};
+
+    meals.forEach(m=>{
+        let d = new Date(m.date).toDateString();
+        days[d] = (days[d] || 0) + +m.calories;
+    });
+
+    Object.values(days).slice(-7).forEach(v=>{
+        chart.innerHTML += `
+        <div class="bar-col">
+            <div class="bar-fill" style="height:${Math.min(v/20,100)}%"></div>
+        </div>`;
+    });
+}
+
+render();
+
+
+</script>
+
+</body>
+</html>

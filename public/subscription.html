@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Абонемент | TAZIRRA</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:radial-gradient(circle at top, #1a1a1a, #050505);
+color:white;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+.card{
+width:420px;
+background:#111;
+border:1px solid #2a2a2a;
+border-radius:18px;
+padding:25px;
+box-shadow:0 0 30px rgba(255,145,0,0.15);
+position:relative;
+overflow:hidden;
+}
+
+.card::before{
+content:"";
+position:absolute;
+top:-50px;
+right:-50px;
+width:120px;
+height:120px;
+background:#ff9100;
+border-radius:50%;
+opacity:0.15;
+}
+
+.title{
+font-size:22px;
+font-weight:bold;
+margin-bottom:15px;
+color:#ff9100;
+}
+
+.row{
+margin:10px 0;
+font-size:15px;
+color:#ddd;
+}
+
+.label{
+color:#888;
+font-size:13px;
+}
+
+.value{
+font-size:16px;
+margin-top:2px;
+}
+
+.qr{
+margin-top:20px;
+background:#1a1a1a;
+padding:15px;
+border-radius:12px;
+text-align:center;
+font-family:monospace;
+color:#ff9100;
+letter-spacing:2px;
+}
+
+.status{
+display:inline-block;
+margin-top:15px;
+padding:5px 10px;
+background:#00c853;
+color:black;
+border-radius:20px;
+font-size:12px;
+font-weight:bold;
+}
+
+.price{
+font-size:20px;
+font-weight:bold;
+color:#ff9100;
+margin-top:10px;
+}
+
+.btn{
+margin-top:20px;
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#ff9100;
+cursor:pointer;
+font-weight:bold;
+}
+
+.btn:hover{
+opacity:0.9;
+}
+
+.empty{
+text-align:center;
+background:#111;
+padding:30px;
+border-radius:15px;
+border:1px solid #333;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div id="app"></div>
+
+<script>
+
+const data = JSON.parse(localStorage.getItem("subscription"));
+
+const app = document.getElementById("app");
+
+if(!data){
+
+app.innerHTML = `
+<div class="empty">
+<h2>❌ Абонемент не знайдено</h2>
+<p>Спочатку запишіться на тренування</p>
+<button class="btn" onclick="location.href='trainerss.html'">
+До тренерів
+</button>
+</div>
+`;
+
+}else{
+
+app.innerHTML = `
+<div class="card">
+
+<div class="title">🏋️ TAZIRRA FITNESS PASS</div>
+
+<div class="row">
+<div class="label">Тренер</div>
+<div class="value">${data.trainer}</div>
+</div>
+
+<div class="row">
+<div class="label">Тип тренування</div>
+<div class="value">${data.type}</div>
+</div>
+
+<div class="row">
+<div class="label">Дата</div>
+<div class="value">${data.date}</div>
+</div>
+
+<div class="row">
+<div class="label">Час</div>
+<div class="value">${data.time}</div>
+</div>
+
+<div class="row">
+<div class="label">ID абонемента</div>
+<div class="value">${data.id}</div>
+</div>
+
+<div class="price">${data.price} грн</div>
+
+<div class="status">ACTIVE</div>
+
+<div class="qr">
+QR: ${data.id}-${data.trainer}
+</div>
+
+<button class="btn" onclick="location.href='trainers.html'">
+Новий запис
+</button>
+
+</div>
+`;
+}
+
+</script>
+
+</body>
+</html>

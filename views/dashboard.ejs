@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TAZIRRA Dashboard</title>
+
+    <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+
+<body>
+
+<!-- =========================
+     SIDEBAR
+========================= -->
+
+<div class="sidebar">
+
+    <div>
+
+        <div class="logo">
+            TAZ<span>IRRA</span>
+        </div>
+
+        <div class="nav">
+            <a href="/">🏠 Головна</a>
+            <a href="/dashboard" class="active">📊 Dashboard</a>
+            <a href="/trainers">🏋️ Тренери</a>
+            <a href="/records">📅 Мої записи</a>
+            <a href="/subscription">💳 Абонемент</a>
+            <a href="/profile">👤 Мій профіль</a>
+            <a href="/portfolio">📁 Моє портфоліо</a>
+            <a href="/posts">📝 Мої пости</a>
+            <a href="/meals">🍽 Харчування</a>
+            <a href="/settings">⚙️ Налаштування</a>
+        </div>
+
+    </div>
+
+    <form action="/logout" method="POST">
+        <button class="logout-btn">Вийти</button>
+    </form>
+
+</div>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<div class="main">
+
+    <!-- TOPBAR -->
+    <div class="topbar">
+
+        <div>
+            <h2>Dashboard</h2>
+            <p>Вітаємо, <%= user.username %> 👋</p>
+        </div>
+
+        <div class="profile">
+            <%= user.username.charAt(0).toUpperCase() %>
+        </div>
+
+    </div>
+
+    <!-- WELCOME -->
+    <div class="welcome">
+        <h1>Вітаємо у TAZIRRA 💪</h1>
+        <p>Керуй тренуваннями, записами та прогресом в одному місці.</p>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats">
+
+        <div class="stat-box">
+            <h2 id="totalTrainings">0</h2>
+            <p>Тренувань</p>
+        </div>
+
+        <div class="stat-box">
+            <h2 id="activeBookings">0</h2>
+            <p>Активні записи</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>7</h3>
+            <p>Днів підряд</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Premium</h3>
+            <p>Тариф</p>
+        </div>
+
+    </div>
+
+    <!-- CARDS -->
+    <div class="cards">
+
+        <div class="card">
+            <h2>👤 Профіль</h2>
+            <p>Змінюй дані та фото профілю.</p>
+            <a href="/profile">Відкрити →</a>
+        </div>
+
+        <div class="card">
+            <h2>📁 Портфоліо</h2>
+            <p>Твої досягнення та роботи.</p>
+            <a href="/portfolio">Відкрити →</a>
+        </div>
+
+        <div class="card">
+            <h2>📝 Пости</h2>
+            <p>Створюй свої публікації.</p>
+            <a href="/posts">Відкрити →</a>
+        </div>
+
+        <div class="card">
+            <h2>🏋️ Тренери</h2>
+            <p>Запис на тренування.</p>
+            <a href="/trainers">Відкрити →</a>
+        </div>
+
+        <div class="card">
+            <h2>📅 Записи</h2>
+            <p>Твої бронювання.</p>
+            <a href="/records">Відкрити →</a>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     SCRIPTS
+========================= -->
+
+<script>
+async function loadDashboardStats() {
+    try {
+        const res = await fetch('/dashboard-stats');
+
+        if (!res.ok) throw new Error("API error");
+
+        const stats = await res.json();
+
+        document.getElementById('activeBookings').innerText =
+            stats.activeBookings || 0;
+
+        document.getElementById('totalTrainings').innerText =
+            stats.totalTrainings || 0;
+
+    } catch (err) {
+        console.log(err);
+
+        document.getElementById('activeBookings').innerText = 0;
+        document.getElementById('totalTrainings').innerText = 0;
+    }
+}
+
+loadDashboardStats();
+</script>
+
+</body>
+</html>

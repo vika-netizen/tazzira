@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Абонемент | TAZIRRA</title>
+
+    <link rel="stylesheet"
+          href="/css/subscription.css">
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div>
+
+        <div class="logo">
+            TAZ<span>IRRA</span>
+        </div>
+
+        <div class="nav">
+<a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/settings">⚙️ Налаштування</a>
+
+        </div>
+
+    <form action="/logout" method="POST">
+
+        <button class="logout-btn">
+            Вийти
+        </button>
+
+    </form>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h1>
+            Абонемент 💳
+        </h1>
+
+    </div>
+
+    <!-- ACTIVE PLAN -->
+
+    <div class="active-plan">
+
+        <div class="plan-info">
+
+            <div class="badge">
+                PREMIUM
+            </div>
+
+            <h2>
+                Premium Membership
+            </h2>
+
+            <p>
+                Повний доступ до тренажерного залу,
+                персональних тренерів та AI-помічника.
+            </p>
+
+        </div>
+
+        <div class="days-left">
+
+            <span>
+                18
+            </span>
+
+            <p>
+                днів залишилось
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PROGRESS -->
+
+    <div class="progress-section">
+
+        <div class="progress-text">
+
+            <span>
+                Термін дії
+            </span>
+
+            <span>
+                70%
+            </span>
+
+        </div>
+
+        <div class="progress-bar">
+
+            <div class="progress-fill">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- PLANS -->
+
+    <div class="plans-grid">
+
+        <!-- BASIC -->
+
+        <div class="plan-card">
+
+            <h3>
+                Basic
+            </h3>
+
+            <div class="price">
+                ₴499
+            </div>
+
+            <ul>
+
+                <li>
+                    ✔ Тренажерний зал
+                </li>
+
+                <li>
+                    ✔ Роздягальня
+                </li>
+
+                <li>
+                    ✖ AI Тренер
+                </li>
+
+            </ul>
+
+            <button>
+                Обрати
+            </button>
+
+        </div>
+
+        <!-- PRO -->
+
+        <div class="plan-card featured">
+
+            <div class="popular">
+                POPULAR
+            </div>
+
+            <h3>
+                Pro
+            </h3>
+
+            <div class="price">
+                ₴999
+            </div>
+
+            <ul>
+
+                <li>
+                    ✔ Усі тренажери
+                </li>
+
+                <li>
+                    ✔ AI Тренер
+                </li>
+
+                <li>
+                    ✔ Персональні програми
+                </li>
+
+            </ul>
+
+            <button>
+                Поточний тариф
+            </button>
+
+        </div>
+
+        <!-- VIP -->
+
+        <div class="plan-card">
+
+            <h3>
+                VIP
+            </h3>
+
+            <div class="price">
+                ₴1999
+            </div>
+
+            <ul>
+
+                <li>
+                    ✔ VIP доступ
+                </li>
+
+                <li>
+                    ✔ 24/7 доступ
+                </li>
+
+                <li>
+                    ✔ Особистий тренер
+                </li>
+
+            </ul>
+
+            <button>
+                Обрати
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
+
+
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    border-right:1px solid #222;
+    padding:30px 20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#ff9100;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#ccc;
+    padding:15px;
+    border-radius:14px;
+    background:#111;
+    transition:0.3s;
+}
+
+.nav a:hover,
+.nav .active{
+    background:#ff9100;
+    color:black;
+}
+
+.logout-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#ff3d3d;
+    color:white;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    padding:40px;
+}
+
+.topbar{
+    margin-bottom:35px;
+}
+
+.topbar h1{
+    font-size:42px;
+}
+
+/* ACTIVE PLAN */
+
+.active-plan{
+    background:linear-gradient(
+        135deg,
+        #ff9100,
+        #ff5e00
+    );
+
+    border-radius:30px;
+
+    padding:40px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:35px;
+
+    box-shadow:0 0 40px rgba(255,145,0,0.2);
+}
+
+.badge{
+    display:inline-block;
+    background:white;
+    color:black;
+    padding:10px 14px;
+    border-radius:12px;
+    font-weight:bold;
+    margin-bottom:20px;
+}
+
+.plan-info h2{
+    font-size:42px;
+    margin-bottom:15px;
+}
+
+.plan-info p{
+    max-width:500px;
+    line-height:1.7;
+}
+
+.days-left{
+    text-align:center;
+}
+
+.days-left span{
+    font-size:70px;
+    font-weight:bold;
+}
+
+.days-left p{
+    font-size:18px;
+}
+
+/* PROGRESS */
+
+.progress-section{
+    background:#111;
+    border:1px solid #222;
+    padding:30px;
+    border-radius:24px;
+    margin-bottom:40px;
+}
+
+.progress-text{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.progress-bar{
+    width:100%;
+    height:16px;
+    background:#222;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.progress-fill{
+    width:70%;
+    height:100%;
+    background:linear-gradient(
+        90deg,
+        #ff9100,
+        #ff5e00
+    );
+}
+
+/* PLANS */
+
+.plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+.plan-card{
+    background:#111;
+    border:1px solid #222;
+    border-radius:28px;
+    padding:35px;
+    position:relative;
+    transition:0.3s;
+}
+
+.plan-card:hover{
+    transform:translateY(-8px);
+    border-color:#ff9100;
+}
+
+.featured{
+    border:2px solid #ff9100;
+    transform:scale(1.03);
+}
+
+.popular{
+    position:absolute;
+    top:20px;
+    right:20px;
+    background:#ff9100;
+    color:black;
+    padding:8px 12px;
+    border-radius:10px;
+    font-size:13px;
+    font-weight:bold;
+}
+
+.plan-card h3{
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.price{
+    font-size:50px;
+    font-weight:bold;
+    margin-bottom:25px;
+}
+
+.plan-card ul{
+    list-style:none;
+    margin-bottom:30px;
+}
+
+.plan-card li{
+    margin-bottom:14px;
+    color:#bbb;
+}
+
+.plan-card button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:14px;
+    background:#ff9100;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+.plan-card button:hover{
+    transform:scale(1.02);
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    body{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        border-right:none;
+        border-bottom:1px solid #222;
+    }
+
+    .main{
+        padding:20px;
+    }
+
+    .active-plan{
+        flex-direction:column;
+        gap:30px;
+        text-align:center;
+    }
+
+    .plan-info h2{
+        font-size:32px;
+    }
+
+}
+</style>

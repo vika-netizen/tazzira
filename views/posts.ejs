@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>Мої пости | TAZIRRA</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial;
+    background:#050505;
+    color:white;
+    display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    padding:30px;
+    min-height:100vh;
+}
+
+.logo{
+    font-size:30px;
+    font-weight:bold;
+}
+
+.logo span{color:#ff9100;}
+
+.nav a{
+    display:block;
+    padding:10px;
+    margin:8px 0;
+    background:#111;
+    color:white;
+    text-decoration:none;
+    border-radius:10px;
+}
+
+.nav a:hover{
+    background:#ff9100;
+    color:black;
+}
+
+/* MAIN */
+.main{
+    flex:1;
+    padding:40px;
+}
+
+input, textarea{
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    background:#111;
+    border:none;
+    color:white;
+    border-radius:10px;
+}
+
+button{
+    padding:10px 15px;
+    background:#ff9100;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* POST */
+.post{
+    background:#111;
+    padding:20px;
+    margin-top:15px;
+    border-radius:15px;
+    border:1px solid #222;
+}
+
+.small{
+    color:#888;
+    font-size:12px;
+}
+
+.delete{
+    background:red;
+    margin-top:10px;
+    width:100%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div class="logo">TAZ<span>IRRA</span></div>
+
+    <div class="nav">
+          <a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/ai">🤖 AI Тренер</a>
+    <a href="/settings">⚙️ Налаштування</a>
+    </div>
+</div>
+
+<div class="main">
+
+<h1>📝 Мої пости</h1>
+
+<!-- CREATE -->
+<div>
+    <input id="title" placeholder="Заголовок">
+    <textarea id="text" placeholder="Текст"></textarea>
+    <button onclick="createPost()">Створити</button>
+</div>
+
+<!-- POSTS -->
+<div id="posts"></div>
+
+</div>
+
+<script>
+
+async function loadPosts(){
+    const res = await fetch("/posts");
+    const data = await res.json();
+
+    const box = document.getElementById("posts");
+    box.innerHTML = "";
+
+    if(data.length === 0){
+        box.innerHTML = "<p>Постів немає</p>";
+        return;
+    }
+
+    data.forEach(p => {
+        box.innerHTML += `
+            <div class="post">
+                <h3>${p.title}</h3>
+                <p>${p.text}</p>
+                <div class="small">
+                    ${p.user} • ${p.created_at}
+                </div>
+
+                <button class="delete" onclick="deletePost(${p.id})">
+                    Видалити
+                </button>
+            </div>
+        `;
+    });
+}
+
+async function createPost(){
+
+    const title = document.getElementById("title").value;
+    const text = document.getElementById("text").value;
+
+    if(!title || !text) return alert("Заповни поля");
+
+    await fetch("/posts", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+            title,
+            text,
+            user:"tazirra_user"
+        })
+    });
+
+    document.getElementById("title").value = "";
+    document.getElementById("text").value = "";
+
+    loadPosts();
+}
+
+async function deletePost(id){
+    await fetch("/posts/delete", {
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({ id })
+    });
+
+    loadPosts();
+}
+
+loadPosts();
+
+</script>
+
+</body>
+</html>

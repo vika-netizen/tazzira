@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Тренери | TAZIRRA</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial;
+}
+body{
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    border-right:1px solid #1f1f1f;
+    padding:30px 20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+.logo{font-size:34px;font-weight:800;margin-bottom:40px;}
+.logo span{color:#ff9100;}
+.nav{display:flex;flex-direction:column;gap:15px;}
+.nav a{color:#ccc;text-decoration:none;padding:15px;background:#111;border-radius:16px;}
+.nav a:hover{background:#ff9100;color:black;}
+.logout-btn{width:100%;padding:15px;background:#ff3d3d;border:none;color:white;border-radius:16px;}
+
+.main{flex:1;padding:40px;}
+
+.trainers-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+    gap:30px;
+}
+
+.trainer-card{
+    background:#111;
+    border:1px solid #222;
+    border-radius:20px;
+    padding:20px;
+}
+
+.book-btn{
+    width:100%;
+    padding:12px;
+    background:#ff9100;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+    <div>
+        <div class="logo">TAZ<span>IRRA</span></div>
+
+        <div class="nav">
+             <a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/settings">⚙️ Налаштування</a>
+        </div>
+    </div>
+
+    <form action="/logout" method="POST">
+        <button class="logout-btn">Вийти</button>
+    </form>
+</div>
+
+<div class="main">
+
+    <h1>Наші тренери 💪</h1>
+
+    <div id="trainersContainer" class="trainers-grid">
+        <p>Завантаження...</p>
+    </div>
+
+</div>
+
+<!-- MODAL -->
+<div id="modal" style="display:none;position:fixed;inset:0;background:#0009;justify-content:center;align-items:center;">
+    <div style="background:#111;padding:20px;width:400px;border-radius:12px;">
+        <h3>Слоти</h3>
+        <div id="slots"></div>
+        <button onclick="closeModal()">Закрити</button>
+    </div>
+</div>
+
+<script>
+
+const container = document.getElementById('trainersContainer');
+const modal = document.getElementById('modal');
+const slotsDiv = document.getElementById('slots');
+
+
+// =======================
+// LOAD TRAINERS (FIXED)
+// =======================
+async function loadTrainers() {
+    try {
+        const res = await fetch('/api/trainers'); // 🔥 FIX
+        if (!res.ok) throw new Error("API error");
+
+        const trainers = await res.json();
+
+        container.innerHTML = "";
+
+        trainers.forEach(t => {
+            container.innerHTML += `
+                <div class="trainer-card">
+                    <h2>${t.name}</h2>
+                    <p>${t.specialty || ''}</p>
+                    <p>⭐ ${t.rating || 0}</p>
+
+                    <button class="book-btn"
+                        onclick="openBooking(${t.id})">
+                        Записатись
+                    </button>
+                </div>
+            `;
+        });
+
+    } catch (err) {
+        console.log(err);
+        container.innerHTML = "<p>Помилка завантаження тренерів</p>";
+    }
+}
+
+loadTrainers();
+
+
+// =======================
+// OPEN BOOKING (FIXED)
+// =======================
+async function openBooking(id) {
+
+    modal.style.display = "flex";
+    slotsDiv.innerHTML = "Завантаження...";
+
+    try {
+        const res = await fetch(`/slots/${id}`);
+        const slots = await res.json();
+
+        slotsDiv.innerHTML = "";
+
+        if (!slots.length) {
+            slotsDiv.innerHTML = "<p>Немає слотів</p>";
+            return;
+        }
+
+        slots.forEach(s => {
+            slotsDiv.innerHTML += `
+                <div style="margin:10px 0;padding:10px;background:#222;">
+                    <p>${s.date} ${s.time}</p>
+                    <button onclick="book(${id}, '${s.date}', '${s.time}')">
+                        Запис
+                    </button>
+                </div>
+            `;
+        });
+
+    } catch (e) {
+        slotsDiv.innerHTML = "Помилка слотів";
+    }
+}
+
+
+// =======================
+// BOOK (FIXED)
+// =======================
+async function book(trainer_id, date, time) {
+
+    const res = await fetch('/book', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ trainer_id, date, time })
+    });
+
+    const data = await res.json();
+
+    alert(data.success ? "Запис успішний" : "Помилка");
+
+    closeModal();
+    window.location.href = "/records";
+}
+
+
+// =======================
+// MODAL
+// =======================
+function closeModal() {
+    modal.style.display = "none";
+}
+
+window.onclick = (e) => {
+    if (e.target === modal) closeModal();
+};
+
+</script>
+
+</body>
+</html>

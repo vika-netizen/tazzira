@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | TAZIRRA</title>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div>
+
+        <div class="logo">
+            TAZ<span>IRRA</span>
+        </div>
+
+        <div class="nav">
+
+          <a href="/">🏠 Головна</a>
+    <a href="/dashboard">📊 Dashboard</a>
+    <a href="/trainers">🏋️ Тренери</a>
+    <a href="/records">📅 Мої записи</a>
+    <a href="/subscription">💳 Абонемент</a>
+    <a href="/profile">👤 Мій профіль</a>
+    <a href="/portfolio">📁 Моє портфоліо</a>
+    <a href="/posts">📝 Мої пости</a>
+    <a href="/meals">🍽 Харчування</a>
+    <a href="/settings">⚙️ Налаштування</a>
+
+        </div>
+
+    <form action="/logout" method="POST">
+
+        <button class="logout-btn">
+            Вийти
+        </button>
+
+    </form>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <div class="topbar">
+
+        <h1>
+            Налаштування ⚙️
+        </h1>
+
+    </div>
+
+    <!-- ACCOUNT -->
+
+    <div class="settings-card">
+
+        <h2>
+            Акаунт
+        </h2>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Username
+                </h3>
+
+                <p>
+                    <%= user.username %>
+                </p>
+            </div>
+
+            <button>
+                Змінити
+            </button>
+
+        </div>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Пароль
+                </h3>
+
+                <p>
+                    Змінити пароль акаунта
+                </p>
+            </div>
+
+            <button id="changePasswordBtn">
+                Change
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="settings-card">
+
+        <h2>
+            Сповіщення
+        </h2>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Email повідомлення
+                </h3>
+
+                <p>
+                    Отримувати email updates
+                </p>
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" checked>
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Push notifications
+                </h3>
+
+                <p>
+                    Повідомлення про записи
+                </p>
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" checked>
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+    <!-- APPEARANCE -->
+
+    <div class="settings-card">
+
+        <h2>
+            Зовнішній вигляд
+        </h2>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Dark Mode
+                </h3>
+
+                <p>
+                    Темна тема інтерфейсу
+                </p>
+            </div>
+
+            <label class="switch">
+
+                <input type="checkbox" checked>
+
+                <span class="slider"></span>
+
+            </label>
+
+        </div>
+
+    </div>
+
+    <!-- SECURITY -->
+
+    <div class="settings-card danger">
+
+        <h2>
+            Небезпечна зона
+        </h2>
+
+        <div class="setting-row">
+
+            <div>
+                <h3>
+                    Видалити акаунт
+                </h3>
+
+                <p>
+                    Цю дію неможливо скасувати
+                </p>
+            </div>
+
+            <button class="danger-btn">
+                Delete
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- MODAL -->
+
+<div class="modal"
+     id="passwordModal">
+
+    <div class="modal-content">
+
+        <h2>
+            Зміна пароля
+        </h2>
+
+        <input
+            type="password"
+            placeholder="Новий пароль"
+            id="newPassword"
+        >
+
+        <button id="savePasswordBtn">
+            Зберегти
+        </button>
+
+    </div>
+
+</div>
+
+<script src="/js/settings.js"></script>
+
+</body>
+</html>
+
+<style>
+    *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#050505;
+    color:white;
+    display:flex;
+    min-height:100vh;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:260px;
+    background:#0d0d0d;
+    border-right:1px solid #222;
+    padding:30px 20px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+}
+
+.logo{
+    font-size:32px;
+    font-weight:bold;
+    margin-bottom:40px;
+}
+
+.logo span{
+    color:#ff9100;
+}
+
+.nav{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.nav a{
+    text-decoration:none;
+    color:#ccc;
+    padding:15px;
+    border-radius:14px;
+    background:#111;
+    transition:0.3s;
+}
+
+.nav a:hover,
+.nav .active{
+    background:#ff9100;
+    color:black;
+}
+
+.logout-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#ff3d3d;
+    color:white;
+    cursor:pointer;
+}
+
+/* MAIN */
+
+.main{
+    flex:1;
+    padding:40px;
+}
+
+.topbar{
+    margin-bottom:35px;
+}
+
+.topbar h1{
+    font-size:42px;
+}
+
+/* CARDS */
+
+.settings-card{
+    background:#111;
+    border:1px solid #222;
+    border-radius:28px;
+    padding:35px;
+    margin-bottom:30px;
+}
+
+.settings-card h2{
+    margin-bottom:30px;
+    font-size:28px;
+}
+
+.setting-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px 0;
+    border-bottom:1px solid #222;
+}
+
+.setting-row:last-child{
+    border-bottom:none;
+}
+
+.setting-row h3{
+    margin-bottom:8px;
+}
+
+.setting-row p{
+    color:#aaa;
+}
+
+.setting-row button{
+    background:#ff9100;
+    border:none;
+    padding:12px 18px;
+    border-radius:12px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* SWITCH */
+
+.switch{
+    position:relative;
+    display:inline-block;
+    width:60px;
+    height:34px;
+}
+
+.switch input{
+    opacity:0;
+    width:0;
+    height:0;
+}
+
+.slider{
+    position:absolute;
+    inset:0;
+    background:#333;
+    border-radius:34px;
+    transition:0.4s;
+}
+
+.slider::before{
+    content:'';
+    position:absolute;
+    width:26px;
+    height:26px;
+    left:4px;
+    bottom:4px;
+    background:white;
+    border-radius:50%;
+    transition:0.4s;
+}
+
+input:checked + .slider{
+    background:#ff9100;
+}
+
+input:checked + .slider::before{
+    transform:translateX(26px);
+}
+
+/* DANGER */
+
+.danger{
+    border-color:#ff3d3d;
+}
+
+.danger-btn{
+    background:#ff3d3d !important;
+    color:white;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.7);
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:#111;
+    border:1px solid #222;
+    border-radius:28px;
+    padding:35px;
+    width:400px;
+}
+
+.modal-content h2{
+    margin-bottom:25px;
+}
+
+.modal-content input{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#1a1a1a;
+    color:white;
+    margin-bottom:20px;
+}
+
+.modal-content button{
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:14px;
+    background:#ff9100;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+/* MOBILE */
+
+@media(max-width:900px){
+
+    body{
+        flex-direction:column;
+    }
+
+    .sidebar{
+        width:100%;
+        border-right:none;
+        border-bottom:1px solid #222;
+    }
+
+    .main{
+        padding:20px;
+    }
+
+    .setting-row{
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start;
+    }
+
+}
+</style>

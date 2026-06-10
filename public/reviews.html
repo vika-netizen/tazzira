@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Відгуки — TAZIRRA</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="header">
+
+  <div class="nav-container">
+
+    <div class="logo">
+      TAZI<span>RRA</span>
+    </div>
+
+    <nav class="nav">
+
+      <a href="index.html">Головна</a>
+      <a href="programs.html">Програми</a>
+      <a href="trainers.html">Тренери</a>
+      <a href="price.html">Прайс</a>
+      <a href="reviews.html">Відгуки</a>
+      <a href="contacts.html">Контакти</a>
+
+    </nav>
+
+    <!-- AUTH -->
+    <div id="auth-area">
+
+      <a href="login.html" class="login-btn">
+        Увійти
+      </a>
+
+    </div>
+
+  </div>
+
+</header>
+<!-- ================= REVIEWS PAGE ================= -->
+
+<section class="reviews-section">
+
+    <!-- TITLE -->
+    <div class="reviews-top">
+
+        <span class="reviews-label">TAZIRRA</span>
+
+        <h1>Відгуки клієнтів</h1>
+
+        <p>
+            Реальні результати людей, які тренуються разом з нами
+        </p>
+
+    </div>
+
+    <!-- REVIEW FORM -->
+    <div class="review-form-wrapper">
+
+        <div class="review-form-info">
+
+            <h2>Залишити відгук</h2>
+
+            <p>
+                Напишіть свої враження про тренування,
+                атмосферу та результати.
+            </p>
+
+        </div>
+
+        <form id="reviewForm" class="review-form">
+
+            <div class="input-group">
+
+                <input
+                    type="text"
+                    id="name"
+                    placeholder="Ваше ім’я"
+                    required
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <textarea
+                    id="message"
+                    placeholder="Ваш відгук..."
+                    required
+                ></textarea>
+
+            </div>
+
+            <div class="review-actions">
+
+                <select id="rating">
+
+                    <option value="5">★★★★★</option>
+                    <option value="4">★★★★☆</option>
+                    <option value="3">★★★☆☆</option>
+                    <option value="2">★★☆☆☆</option>
+                    <option value="1">★☆☆☆☆</option>
+
+                </select>
+
+                <button type="submit">
+                    Надіслати
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- REVIEWS -->
+    <div class="reviews-grid" id="reviewsContainer"></div>
+
+</section>
+
+
+<!-- FOOTER -->
+<footer class="footer">
+
+  <div class="footer-container">
+
+    <!-- LOGO -->
+    <div class="footer-box">
+      <h2>TAZIRRA</h2>
+
+      <p>
+        Фітнес-клуб із фокусом
+        на результат.
+      </p>
+    </div>
+
+    <!-- NAVIGATION -->
+    <div class="footer-box">
+      <h3>Навігація</h3>
+
+      <a href="index.html">Головна</a>
+      <a href="programs.html">Програми</a>
+      <a href="trainers.html">Тренери</a>
+      <a href="price.html">Прайс</a>
+      <a href="reviews.html">Відгуки</a>
+      <a href="contacts.html">Контакти</a>
+    </div>
+
+    <!-- CONTACTS -->
+    <div class="footer-box">
+      <h3>Контакти</h3>
+
+      <div class="footer-contact">
+        <span>📍</span>
+        <p>Івано-Франківськ</p>
+      </div>
+
+      <div class="footer-contact">
+        <span>📞</span>
+        <p>+380 96 678 34 75</p>
+      </div>
+
+      <div class="footer-contact">
+        <span>📸</span>
+
+        <a href="https://www.instagram.com/tazirra_gym?igsh=MWg5N2lhM24weXMwbQ=="
+           target="_blank">
+
+          @tazirra_gym
+
+        </a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 TAZIRRA
+  </div>
+
+</footer>
+
+</body>
+</html>
+
+<!-- SCRIPT -->
+<script>
+const form = document.getElementById("reviewForm");
+const container = document.getElementById("reviewsContainer");
+
+// завантаження з localStorage
+let reviews = JSON.parse(localStorage.getItem("reviews")) || [
+  {name: "Ірина", message: "За 2 місяці мінус 6 кг.", rating: "★★★★★"},
+  {name: "Максим", message: "Тренери реально контролюють процес.", rating: "★★★★★"},
+  {name: "Аліна", message: "Крута атмосфера.", rating: "★★★★☆"}
+];
+
+// функція відображення
+function renderReviews() {
+  container.innerHTML = "";
+  reviews.slice().reverse().forEach(r => {
+    container.innerHTML += `
+      <div class="review-card big">
+        <div class="stars">${r.rating}</div>
+        <p>${r.message}</p>
+        <h4>— ${r.name}</h4>
+      </div>
+    `;
+  });
+}
+
+// додавання
+form.addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const name = document.getElementById("name").value;
+  const message = document.getElementById("message").value;
+  const ratingValue = document.getElementById("rating").value;
+
+  const stars = "★★★★★☆☆☆☆☆".slice(5 - ratingValue, 10 - ratingValue);
+
+  const newReview = { name, message, rating: stars };
+
+  reviews.push(newReview);
+  localStorage.setItem("reviews", JSON.stringify(reviews));
+
+  form.reset();
+  renderReviews();
+});
+
+// старт
+renderReviews();
+</script>
+<script src="auth.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
+
